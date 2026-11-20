@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CAMDAR Basic UI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="top-item">
+        <span id="conn-dot" class="dot dot-live"></span>
+        <span id="conn-text">Connecting...</span>
+      </div>
+      <div class="top-item">
+        <span class="k">FPS</span>
+        <span id="m-fps" class="v">0.0</span>
+      </div>
+      <div class="top-item">
+        <span class="k">Latency</span>
+        <span id="m-latency" class="v">0 ms</span>
+      </div>
+      <div class="top-item">
+        <span class="k">Last update</span>
+        <span id="m-last-update" class="v">-</span>
+      </div>
+      <div class="top-item top-item-action">
+        <button id="stop-server-btn" class="danger-btn" type="button">Stop Server</button>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="card live">
+        <div class="head">Live Camera</div>
+        <div class="video-box">
+          <img id="video-feed" src="/video_feed" alt="live feed" />
+        </div>
+      </section>
+
+      <aside class="card status">
+        <div class="head">Status Panel</div>
+        <div class="panel">
+          <section class="alert-block">
+            <div class="alert-row">
+              <div>
+                <div class="label">Emergency</div>
+                <div id="m-emergency" class="value sev-emergency">0</div>
+              </div>
+              <div>
+                <div class="label">Uncertain</div>
+                <div id="m-uncertain" class="value sev-uncertain">0</div>
+              </div>
+              <div>
+                <div class="label">People</div>
+                <div id="m-people" class="value">0</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="metrics">
+            <div class="metric">
+              <div class="label">Reconnects</div>
+              <div id="m-reconnects" class="value">0</div>
+            </div>
+            <div class="metric">
+              <div class="label">Stream status</div>
+              <div id="stream-state" class="value">loading</div>
+            </div>
+          </section>
+
+          <section class="people-controls">
+            <div class="controls-head">
+              <div class="label">People list</div>
+              <select id="sort-mode" aria-label="Sort people">
+                <option value="status_p">Sort: status confidence</option>
+                <option value="track_id">Sort: track ID</option>
+                <option value="det_conf">Sort: detection confidence</option>
+              </select>
+            </div>
+            <div class="filters">
+              <button class="pill is-active" data-filter="all">All</button>
+              <button class="pill" data-filter="emergency">Emergency</button>
+              <button class="pill" data-filter="uncertain">Uncertain</button>
+              <button class="pill" data-filter="normal">Normal</button>
+              <button class="pill" data-filter="unknown">Unknown</button>
+            </div>
+          </section>
+
+          <section id="people-list" class="people-list">
+            <div class="state">Loading tracks...</div>
+          </section>
+        </div>
+      </aside>
+    </main>
+    <script src="{{ url_for('static', filename='new_app.js') }}"></script>
+  </body>
+</html>

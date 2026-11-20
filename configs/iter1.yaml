@@ -5,11 +5,14 @@ app:
   # Realtime preset applied at config load: balanced|aggressive|quality|off
   realtime_profile: "off"
   # Select active source key below: "webcam" or "pi_cam"
-  source_select: "webcam"
+  source_select: "zedx_left"
+  preview_fps: 30
   sources:
     webcam: "0"
     pi_cam: "udp://192.168.50.1:5556?overrun_nonfatal=1&fifo_size=50000000"
-    zed_cam: "LOCAL"
+    zedx_mono: "zedxonesrc camera-resolution=2 camera-fps=30 ! videoconvert ! video/x-raw, format=BGR ! appsink drop=true sync=false"
+    zedx_stereo: "zedsrc stream-type=2 ! videoconvert ! video/x-raw, format=BGR ! appsink drop=true sync=false"
+    zedx_left: "zedsrc stream-type=0 camera-fps=30 ! videoconvert ! video/x-raw,format=BGR,framerate=30/1 ! appsink drop=true max-buffers=1 sync=false"
 
 pipeline:
   stages:
@@ -21,9 +24,9 @@ pipeline:
         model_path: "assets/models/yolo26x-pose.pt"
         conf: 0.25
         iou: 0.7
-        max_det: 50
+        max_det: 1
         kpt_conf_thresh: 0.2
-        inference_stride: 1
+        inference_stride: 7
         track_with_bytetrack: true
         tracker_cfg: "bytetrack.yaml"
         persist_tracks: true
@@ -67,8 +70,3 @@ pipeline:
       params:
         draw_kpts: true
         kpt_thresh: 0.3
-app:
-  camera_id: "cam_02"
-  display: false
-  log_events: true
-  preview_fps: 30
